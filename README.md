@@ -5,7 +5,7 @@
 
 **Student:** Yuting
 **Issue:** [[issue link](https://github.com/apache/hamilton/issues/121)]
-**Status:** [**Phase I** / Phase II / Phase III / Phase IV] [**In Progress** / Complete]
+**Status:** [**Phase I** / Phase II / Phase III / Phase IV] [In Progress / **Complete**]
 
 ---
 
@@ -19,12 +19,10 @@ This refactor issue involves API design, which interests me.
 
 ### Problem Description
 
-[In your own words, what's broken or missing?]
-
+Combine two decorator into one decorator.
 ### Expected Behavior
 
-[What should happen?]
-
+One decorator that can function as the same as the current two decorator.
 ### Current Behavior
 
 [What actually happens?]
