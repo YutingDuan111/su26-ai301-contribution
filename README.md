@@ -1,36 +1,34 @@
-# Contribution [#]: Combined extract decorator#121
+# Contribution: PO: parts with different project codes get merged into single line #10947
 
 
 **Contribution Number:** 1
 
 **Student:** Yuting
-**Issue:** [[issue link](https://github.com/apache/hamilton/issues/121)]
-**Status:** [**Phase I** / Phase II / Phase III / Phase IV] [In Progress / **Complete**]
+**Issue:** [issue link](https://github.com/issues/recent?issue=inventree%7CInvenTree%7C10947)
+**Status:** [**Phase I** / **Phase II** / Phase III / Phase IV] [**In Progress** / Complete]
 
 ---
 
 ## Why I Chose This Issue
 
-This refactor issue involves API design, which interests me.
+
 
 ---
 
 ## Understanding the Issue
 
 ### Problem Description
+The "Add Line Item" form in Purchase Orders includes a "Merge Items" checkbox, which is currently hardcoded to True by default. When enabled, adding a line item for a part that already exists in the PO will merge it into the existing line — including overwriting the project code. There is no system-level setting to change this default behavior.
 
-Combine two decorator into one decorator.
-### Expected Behavior
-
-One decorator that can function as the same as the current two decorator.
 ### Current Behavior
+The "Merge Items" checkbox in the PO line item form always defaults to True. Users who need items with different project codes to remain as separate lines must manually uncheck "Merge Items" every time they add a line item, with no way to configure a different default.
 
-[What actually happens?]
+### Expected Behavior
+A configurable setting should be added to the system settings that controls the default state of the "Merge Items" checkbox — allowing administrators to set it to False by default for instances where per project-code tracking is important.
 
 ### Affected Components
-
-[Which parts of the codebase are involved?]
-
+- PO "Add Line Item" form — Merge Items checkbox default value
+- System settings — new configurable toggle for the above default
 ---
 
 ## Reproduction Process
