@@ -10,7 +10,7 @@
 ---
 
 ## Why I Chose This Issue
-
+This issue is simple and good for new contributors. It repo is mainly Python, the language I'm familiar enough.
 
 
 ---
