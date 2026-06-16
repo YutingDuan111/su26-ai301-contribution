@@ -63,31 +63,58 @@ Prerequisites that need to be created before reproducing:
 ## Solution Approach
 
 ### Analysis
+The "Merge Items" checkbox in the PO "Add Line Item" form has two hardcoded True defaults:
 
-[Your analysis of the root cause - what's causing the issue?]
+1. order/serializers.py:738 — default=True on the merge_items BooleanField
+2. order/api.py:688 — data.get('merge_items', True) safety fallback
+
+The merge logic (api.py:689-694) compares part, order, target_date, destination — but NOT project_code. So two items with different project
+codes for the same part/order/date/destination always merge, silently discarding the second project code.
+
+The frontend (PurchaseOrderForms.tsx:223-225) renders the checkbox with an empty field spec {}, which means the backend serializer's default
+drives the initial checkbox state.
+
 
 ### Proposed Solution
 
-[High-level description of your fix approach]
+Add a PURCHASEORDER_MERGE_ITEMS_DEFAULT global setting (default: True to preserve current behavior). Wire it as the default in both the
+ serializer and the api fallback. In the frontend, read it via globalSettings.isSet(...) to pre-populate the checkbox.
 
 ### Implementation Plan
 
 Using UMPIRE framework (adapted):
 
-**Understand:** [Restate the problem]
+**Understand:** The "Merge Items" checkbox in the PO "Add Line Item" form always defaults to checked (True), with no system-level way to change that default.
+ Items with different project codes for the same part get silently merged. A configurable global setting should control the checkbox default.
 
-**Match:** [What similar patterns/solutions exist in the codebase?]
+**Match:** 
+- Settings pattern: existing PURCHASEORDER booleans in common/setting/system.py (e.g., PURCHASEORDER_AUTO_COMPLETE at line ~983).
+- Backend setting read: get_global_setting(key, backup_value=...) — already imported in serializers.py (line 22) and available as
+common.settings.get_global_setting in api.py (line 28).
+- Frontend setting read: globalSettings.isSet('SETTING_KEY') pattern from PartForms.tsx:74-104. globalSettings is already available in
+usePurchaseOrderLineItemFields() at PurchaseOrderForms.tsx:75.
 
 **Plan:** [Step-by-step implementation plan]
-1. [Modify file X to do Y]
-2. [Add function Z]
-3. [Update tests]
+ 1. src/backend/InvenTree/common/setting/system.py — add after PURCHASEORDER_AUTO_COMPLETE (~line 983)
+ 2. src/backend/InvenTree/order/serializers.py:738 — replace hardcoded default=True with
+ 3. src/backend/InvenTree/order/api.py:688 — replace hardcoded True fallback
+ 4. src/frontend/src/forms/PurchaseOrderForms.tsx:224 — replace empty
+ 5. Tests — add to src/backend/InvenTree/order/test_api.py
 
-**Implement:** [Link to your branch/commits as you work]
 
-**Review:** [Self-review checklist - does it follow the project's contribution guidelines?]
+**Implement:** [Link](https://github.com/YutingDuan111/InvenTree/tree/fix-issue-10947)
 
-**Evaluate:** [How will you verify it works?]
+**Review:** 
+ - [ ] All user-visible strings use _('...') (gettext_lazy)
+ - [ ] Setting key follows PURCHASEORDER_* naming convention
+ - [ ] Pre-commit hooks run (invoke dev.setup-dev)
+ - [ ] No migration needed — adding a global setting key only adds a row to the existing settings table when first accessed; it does NOT alter
+ database schema
+
+**Evaluate:** 
+ - Unit tests pass: invoke dev.test --runtest order
+ - Manual: set PURCHASEORDER_MERGE_ITEMS_DEFAULT=False in system settings → open "Add Line Item" → verify checkbox is unchecked by default
+ - Manual: set to True → verify checkbox is checked by default (existing behavior unchanged)
 
 ---
 
