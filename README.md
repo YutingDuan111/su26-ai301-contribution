@@ -5,7 +5,7 @@
 
 **Student:** Yuting
 **Issue:** [issue link](https://github.com/issues/recent?issue=inventree%7CInvenTree%7C10947)
-**Status:** [**Phase I** / **Phase II** / Phase III / Phase IV] [**In Progress** / Complete]
+**Status:** [**Phase I** / **Phase II** / Phase III / Phase IV] [In Progress / **Complete**]
 
 ---
 
@@ -35,20 +35,29 @@ A configurable setting should be added to the system settings that controls the 
 
 ### Environment Setup
 
-[Notes on setting up your local development environment - challenges you faced, how you solved them]
+Set up a Docker production server following the official installation guide 
+(https://docs.inventree.org/en/latest/start/docker_install/), running InvenTree v1.3.5.
+
+Prerequisites that need to be created before reproducing:
+- At least one Part
+- At least one Supplier with a Supplier Part linked to the above Part
+- At least two Project Codes (Settings → Project Codes)
 
 ### Steps to Reproduce
 
-1. [Step 1]
-2. [Step 2]
-3. [Observed result]
+1. Create a new Purchase Order with a Supplier
+2. Add a line item: select the Supplier Part, assign Project Code #1, submit
+3. Add another line item: select the **same** Supplier Part, assign Project Code #2, submit
+4. Observe that the two line items are merged into one, retaining only Project Code #1
+
 
 ### Reproduction Evidence
 
-- **Commit showing reproduction:** [Link to commit in your fork]
-- **Screenshots/logs:** [If applicable]
-- **My findings:** [What you discovered during reproduction]
-
+- **Screenshots/logs:** ![My Screenshot](reproduced_issue.png)
+- **My findings:** 
+  - When "Merge Items" is checked (default): adding the same part twice merges the lines into one, and the second project code is silently discarded
+  - When "Merge Items" is unchecked: both line items are kept as separate lines, each retaining their own project code — this is the expected behavior
+  - If the PO itself has a project code assigned, it does not affect the per-line-item project code behavior described above
 ---
 
 ## Solution Approach
