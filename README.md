@@ -5,7 +5,7 @@
 
 **Student:** Yuting
 **Issue:** [issue link](https://github.com/issues/recent?issue=inventree%7CInvenTree%7C10947)
-**Status:** [**Phase I** / **Phase II** / Phase III / Phase IV] [In Progress / **Complete**]
+**Status:** [**Phase I** / **Phase II** / **Phase III** / Phase IV] [In Progress / **Complete**]
 
 ---
 
@@ -102,7 +102,7 @@ usePurchaseOrderLineItemFields() at PurchaseOrderForms.tsx:75.
  5. Tests — add to src/backend/InvenTree/order/test_api.py
 
 
-**Implement:** [Link](https://github.com/YutingDuan111/InvenTree/tree/fix-issue-10947)
+**Implement:** [Link](https://github.com/YutingDuan111/InvenTree/tree/fix-issue-10947) commit dc7931688cde400aa59a3cfcd7283d4f27609250
 
 **Review:** 
  - [ ] All user-visible strings use _('...') (gettext_lazy)
